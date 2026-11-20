@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Выздоравливай скорее, солнышко! ✨</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Анимированный фон -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Навигация и панель управления атмосферой -->
+  <header class="top-bar">
+    <div class="logo-badge">💌 Для самой лучшей</div>
+    <div class="controls">
+      <button id="sound-toggle" class="icon-btn" title="Уютный шум дождя и камина">
+        <span id="sound-icon">🌧️</span>
+        <span class="btn-label" id="sound-label">Шум дождя</span>
+      </button>
+      <button id="theme-toggle" class="icon-btn" title="Переключить день/ночь">
+        <span id="theme-icon">🌙</span>
+        <span class="btn-label" id="theme-label">Ночной уют</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Главный экран -->
+    <section class="hero card">
+      <div class="teacup-wrapper" id="teacup-trigger" title="Нажми, чтобы согреть чай">
+        <svg class="teacup-svg" viewBox="0 0 200 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Пар -->
+          <path class="steam steam-1" d="M75 55 C70 40, 85 30, 75 15" stroke="var(--accent-primary)" stroke-width="4" stroke-linecap="round"/>
+          <path class="steam steam-2" d="M100 50 C95 35, 110 25, 100 10" stroke="var(--accent-secondary)" stroke-width="4" stroke-linecap="round"/>
+          <path class="steam steam-3" d="M125 55 C120 40, 135 30, 125 15" stroke="var(--accent-primary)" stroke-width="4" stroke-linecap="round"/>
+          <!-- Блюдце -->
+          <ellipse cx="100" cy="152" rx="72" ry="14" fill="var(--cup-saucer)"/>
+          <!-- Ручка -->
+          <path d="M150 85 C178 85, 178 130, 146 130" stroke="var(--cup-body)" stroke-width="12" stroke-linecap="round"/>
+          <!-- Чашка -->
+          <path d="M45 72 H155 L145 135 C143 145, 130 150, 100 150 C70 150, 57 145, 55 135 L45 72 Z" fill="var(--cup-body)"/>
+          <!-- Чай внутри -->
+          <ellipse cx="100" cy="72" rx="55" ry="10" fill="var(--tea-color)"/>
+          <!-- Сердечко на чашке -->
+          <path d="M100 122 C100 122, 82 110, 82 99 C82 93, 87 89, 92 89 C96 89, 99 92, 100 94 C101 92, 104 89, 108 89 C113 89, 118 93, 118 99 C118 110, 100 122, 100 122 Z" fill="var(--accent-primary)"/>
+        </svg>
+        <span class="tap-hint">Нажми на чашечку ✨</span>
+      </div>
+
+      <h1 class="main-title">Выздоравливай скорее, <span class="highlight">солнышко!</span></h1>
+      <p class="subtitle">
+        Я знаю, что болеть совсем не весело. Поэтому я собрал для тебя этот маленький уютный уголок заботы, чтобы тебе стало чуточку теплее и спокойнее.
+      </p>
+      <div class="tea-status" id="tea-status">Чай с малиной и мёдом уже заваривается... ☕</div>
+    </section>
+
+    <!-- Аптечка нежности -->
+    <section class="care-kit">
+      <h2 class="section-title">Твоя аптечка нежности 🩹</h2>
+      <div class="grid-cards">
+        <!-- Карточка 1: Обнимашки -->
+        <div class="card interactive-card">
+          <div class="card-emoji">🤗</div>
+          <h3>Срочные обнимашки</h3>
+          <p>Неограниченный запас виртуального тепла. Нажимай сколько угодно раз!</p>
+          <button id="hug-btn" class="primary-btn">Получить обнимашку</button>
+          <div class="counter-badge">Получено объятий: <strong id="hug-count">0</strong></div>
+        </div>
+
+        <!-- Карточка 2: Витаминка настроения -->
+        <div class="card interactive-card">
+          <div class="card-emoji">💊</div>
+          <h3>Витаминка радости</h3>
+          <p>Принимать при грусти, температуре и плохом самочувствии.</p>
+          <button id="vitamin-btn" class="primary-btn">Принять витаминку</button>
+          <div class="vitamin-note" id="vitamin-note">Нажми, чтобы открыть капсулу ✨</div>
+        </div>
+
+        <!-- Карточка 3: Дыхание и покой -->
+        <div class="card interactive-card">
+          <div class="card-emoji">🌿</div>
+          <h3>Минутка релакса</h3>
+          <p>Закрой глаза, укутайся в плед и просто глубоко подыши.</p>
+          <div class="breath-circle" id="breath-circle">
+            <span id="breath-text">Нажми старт</span>
+          </div>
+          <button id="breath-btn" class="secondary-btn">Начать дыхание</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Баночка с тёплыми пожеланиями -->
+    <section class="wishes-section card">
+      <h2 class="section-title">Баночка с тёплыми словами ✨</h2>
+      <p class="section-desc">Нажми на волшебную звёздочку в баночке, чтобы вытянуть послание для тебя</p>
+      
+      <div class="jar-container">
+        <div class="jar" id="wish-jar" title="Достать пожелание">
+          <div class="jar-lid"></div>
+          <div class="jar-body">
+            <span class="star s1">⭐</span>
+            <span class="star s2">✨</span>
+            <span class="star s3">💛</span>
+            <span class="star s4">🌟</span>
+            <span class="star s5">✨</span>
+          </div>
+        </div>
+        
+        <div class="scroll-paper" id="wish-scroll">
+          <p class="handwritten" id="wish-text">
+            «Даже когда ты в тёплых носочках и с градусником, ты всё равно самая прекрасная!»
+          </p>
+          <button id="next-wish-btn" class="secondary-btn">Ещё одно пожелание 💫</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Купоны заботы -->
+    <section class="coupons-section">
+      <h2 class="section-title">Твои купоны заботы 🎟️</h2>
+      <p class="section-desc">Активируй любой, пришли мне скриншот — и я всё исполню!</p>
+      
+      <div class="coupons-grid">
+        <div class="coupon card" data-coupon="Вкусняшки и фрукты с доставкой прямо к кровати 🍓">
+          <div class="coupon-tag">БЕЗ СРОКА ГОДНОСТИ</div>
+          <h3>Доставка вкусняшек</h3>
+          <p>Мандарины, шоколадка, любимый суп или всё, что душа пожелает.</p>
+          <button class="coupon-btn">Активировать купон</button>
+        </div>
+
+        <div class="coupon card" data-coupon="Вечер любимых фильмов и сериалов под тёплым пледом 🎬">
+          <div class="coupon-tag">VIP-ДОСТУП</div>
+          <h3>Уютный киновечер</h3>
+          <p>Выбираешь фильм только ты, а я отвечаю за чай и вкусности.</p>
+          <button class="coupon-btn">Активировать купон</button>
+        </div>
+
+        <div class="coupon card" data-coupon="Полное освобождение от любых дел и забот на весь день 👑">
+          <div class="coupon-tag">РЕЖИМ ПРИНЦЕССЫ</div>
+          <h3>День полного отдыха</h3>
+          <p>Никаких дел и суеты — только сон, отдых и восстановление сил.</p>
+          <button class="coupon-btn">Активировать купон</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Быстрый ответ -->
+    <section class="reply-section card">
+      <h3>Как ты себя сейчас чувствуешь? 💌</h3>
+      <p>Выбери статус, чтобы скопировать сообщение и отправить мне в один клик:</p>
+      <div class="status-chips">
+        <button class="chip" data-msg="Уже чуточку лучше, спасибо за заботу! 🥰">Уже лучше 🥰</button>
+        <button class="chip" data-msg="Пью тёплый чай и лежу под пледом ☕🧣">Пью чай под пледом ☕</button>
+        <button class="chip" data-msg="Очень хочется обнимашек и вкусняшку 🥺🍫">Хочу вкусняшку 🥺</button>
+        <button class="chip" data-msg="Отдыхаю и набираюсь сил, скоро поправлюсь! 😴✨">Отдыхаю 😴</button>
+      </div>
+      <div class="copy-toast" id="copy-toast">Скопировано в буфер обмена! Можешь вставлять в чат 💬</div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Сделано с огромной теплотой и заботой специально для тебя ❤️
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
